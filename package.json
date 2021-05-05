@@ -1,0 +1,19 @@
+{
+  "name": "socket.io-jsonwebtoken-room",
+  "author": "Ahmad Ardiansyah",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^8.4.0",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "socket.io": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["Socket.io", "JWT", "Room"],
+  "license": "ISC",
+  "description": "Socket.io with Jsonwebtoken support Room"
+}
