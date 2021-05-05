@@ -10,16 +10,24 @@ var io      = require('socket.io')(server, {
 });
 
 io.use((socket, next) => {
-  if (socket.handshake.query && socket.handshake.query.token){
-    var { token } = socket.handshake.query;
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) return next(new Error('Authentication error'));
-      socket.user = decoded;
-      next();
-    });
+  if(process.env.JWT_ENABLE === "true") {
+
+    if (socket.handshake.query && socket.handshake.query.token){
+      var { token } = socket.handshake.query;
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return next(new Error('Authentication error'));
+        socket.user = decoded;
+        next();
+      });
+    }
+    else {
+      next(new Error('Authentication error'));
+    }
+    
   }
   else {
-    next(new Error('Authentication error'));
+    socket.user = { name: 'Anonymous' };
+    next();
   }
 }).on('connection', (socket) => {
   var { room } = socket.handshake.query;
