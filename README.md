@@ -27,7 +27,7 @@ npm start
 
 ```sh
 var socket = io('http://localhost:3000/', {query: {room: 'ROOM', token: 'TOKEN'} })
-socket.emit('message', { message: 'Hello' })
+socket.emit('send', { message: 'Hello' })
 
 socket.on('message', function(data) {
   console.log(data)
