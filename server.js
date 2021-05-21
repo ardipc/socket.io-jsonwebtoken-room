@@ -23,7 +23,6 @@ io.use((socket, next) => {
     else {
       next(new Error('Authentication error'));
     }
-    
   }
   else {
     socket.user = { name: 'Anonymous' };
@@ -33,14 +32,16 @@ io.use((socket, next) => {
   var { room } = socket.handshake.query;
   socket.join(room);
 
+  console.log(socket.user, 'join to', room, Date.now())
+
   socket.on('disconnect', () => {
     socket.leave(room)
   });
 
-  socket.on('message', (msg) => {
+  socket.on('send', (msg) => {
     io.to(room).emit('message', msg);
   });
 
 });
 
-server.listen(process.env.NODE_PORT);
+server.listen(process.env.NODE_PORT, () => console.log(`Socket started...`));

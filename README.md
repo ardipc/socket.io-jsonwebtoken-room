@@ -8,6 +8,7 @@ Socket.io with Jsonwebtoken support Room
 ## Installation
 - Install the dependencies and start the server.
 - Set NODE_PORT in .env
+- Set JWT_ENABLE in .env
 - Set JWT_SECRET in .env
 
 ```sh
@@ -29,6 +30,6 @@ var socket = io('http://localhost:3000/', {query: {room: 'ROOM', token: 'TOKEN'}
 socket.emit('message', { message: 'Hello' })
 
 socket.on('message', function(data) {
-    console.log(data)
+  console.log(data)
 })
 ```
