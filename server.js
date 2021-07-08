@@ -3,7 +3,7 @@ require('dotenv').config();
 var server  = require('http').createServer();
 var io      = require('socket.io')(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE"]
   }
 });
