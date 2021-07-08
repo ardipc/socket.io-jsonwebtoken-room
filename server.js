@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-var jwt     = require('jsonwebtoken');
 var server  = require('http').createServer();
 var io      = require('socket.io')(server, {
   cors: {
@@ -9,39 +8,10 @@ var io      = require('socket.io')(server, {
   }
 });
 
-io.use((socket, next) => {
-  if(process.env.JWT_ENABLE === "true") {
-
-    if (socket.handshake.query && socket.handshake.query.token){
-      var { token } = socket.handshake.query;
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return next(new Error('Authentication error'));
-        socket.user = decoded;
-        next();
-      });
-    }
-    else {
-      next(new Error('Authentication error'));
-    }
-  }
-  else {
-    socket.user = { name: 'Anonymous' };
-    next();
-  }
-}).on('connection', (socket) => {
-  var { room } = socket.handshake.query;
-  socket.join(room);
-
-  console.log(socket.user, 'join to', room, Date.now())
-
-  socket.on('disconnect', () => {
-    socket.leave(room)
-  });
-
+io.on('connection', (socket) => {
   socket.on('send', (msg) => {
-    io.to(room).emit('message', msg);
+    io.emit('message', msg);
   });
-
 });
 
 server.listen(process.env.NODE_PORT, () => console.log(`Socket started...`));
