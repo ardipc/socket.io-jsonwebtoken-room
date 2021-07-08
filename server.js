@@ -3,7 +3,7 @@ require('dotenv').config();
 var server  = require('http').createServer();
 var io      = require('socket.io')(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://jual-instant.ved.carsworld.id", "https://jual-instant.ved.carsworld.id"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"]
   }
 });
