@@ -13,7 +13,11 @@
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": ["Socket.io", "JWT", "Room"],
+  "keywords": [
+    "Socket.io",
+    "JWT",
+    "Room"
+  ],
   "license": "ISC",
   "description": "Socket.io with Jsonwebtoken support Room"
 }
