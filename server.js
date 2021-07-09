@@ -9,37 +9,23 @@ var io      = require('socket.io')(server, {
   }
 });
 
-io.use((socket, next) => {
-  if(process.env.JWT_ENABLE === "true") {
-
-    if (socket.handshake.query && socket.handshake.query.token){
-      var { token } = socket.handshake.query;
+io.on('connection', (socket) => {
+  
+  socket.on('send', (msg) => {
+    var { token, payload } = msg;
+    if(token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return next(new Error('Authentication error'));
-        socket.user = decoded;
-        next();
+        if (err) {
+          return new Error('Permission Denied');
+        }
+        else {
+          io.emit('message', payload);
+        }
       });
     }
     else {
-      next(new Error('Authentication error'));
+      return new Error('Token Required');
     }
-  }
-  else {
-    socket.user = { name: 'Anonymous' };
-    next();
-  }
-}).on('connection', (socket) => {
-  var { room } = socket.handshake.query;
-  socket.join(room);
-
-  console.log(socket.user, 'join to', room, Date.now())
-
-  socket.on('disconnect', () => {
-    socket.leave(room)
-  });
-
-  socket.on('send', (msg) => {
-    io.to(room).emit('message', msg);
   });
 
 });
